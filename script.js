@@ -13,25 +13,32 @@ function Book(title, author, pages, hasRead){
 }
 
 // Adding the users info from the form to the empty array
-const bookArr = [
-    {
-        title: "The chosen one",
-        author: "Abdi",
-        pages: "322"
-    }
-]
+const bookArr = []
 
 
 // When the add book button is clicked, run this function
 function displayModal(){
     //Showing the modal Form to the user
-    modalContainer.style.display = 'block'
+    modalContainer.style.display = 'block';
 }
+
+
+Book.prototype.readBook = function (){
+    if (this.hasRead){
+        return "Read";
+    }else {
+        return "Not Read"
+    }
+}
+
 
 // When User clicks submit run this Function
 function submitNewBook(e){
+    
     // Prevent the browser from submitting to the server
     e.preventDefault();
+
+    
 
     // Grab the value of the users input
     const title = document.getElementById('title').value;
@@ -43,6 +50,8 @@ function submitNewBook(e){
     if (title !== '' && author !== '' && !isNaN(pages) && pages > 0){
         // Create a new instance of the book
         const newBook = new Book(title, author, pages);
+
+        
         
         // push the new book to the empty array
         bookArr.push(newBook);
@@ -62,6 +71,16 @@ function submitNewBook(e){
         // If entered incorrectly alert the user
         alert("Please fill out the required fields correctly")
     }
+
+
+    //Trying to Update the card with the read status
+//     const readStatus = document.getElementById("readeStatus")
+
+//     if(readStatus.getAttribute("type")){
+//         readStatus.innerHTML = "Read"
+//     }else {
+//         readStatus.innerHTML = "Not Read"
+//     }
     
 }
 
@@ -82,9 +101,11 @@ function displayBooks(arr){
         // Adding the class book to style the card
         bookDiv.classList.add('book');
 
-        // Setting an attribute to know which index we are currently on
 
-        // bookDiv.setAttribute("data-index", i)
+        const readStatusElement = document.createElement('span');
+        readStatusElement.classList.add('readStatus');
+        readStatusElement.textContent = book.readBook();
+        bookDiv.appendChild(readStatusElement)
 
         // Creating a Date object
         const currentDate = new Date();
@@ -104,7 +125,9 @@ function displayBooks(arr){
                     <div class="card__arrow")>
                         <i class="fa-solid fa-trash trash-icon deleteBtn"></i>
                     </div>
-                    <span class="readStatus" id="readStatus"></span>
+                    <div class="readStatusWrapper">
+                        <span id="readStatus"></span>
+                    </div>
                 </div>
         `
 
@@ -113,20 +136,20 @@ function displayBooks(arr){
     }
 }
 
-function readBook(e){
-    const readCheckbox = e.target;
-    console.log(readCheckbox);
+// function readBook(e){
+//     const readCheckbox = e.target;
+//     console.log(readCheckbox);
 
-    const cardElement = readCheckbox.closest('.card');
+//     const cardElement = readCheckbox.closest('.card');
 
-    const readStatusElement = cardElement.querySelector('.readStatus');
+//     const readStatusElement = cardElement.querySelector('.readStatus');
 
-    if (readCheckbox.checked){
-        readStatusElement.textContent = "Read";
-    }else {
-        readStatusElement.textContent = "Not Read"
-    }
-}
+//     if (readCheckbox.checked){
+//         readStatusElement.textContent = "Read";
+//     }else {
+//         readStatusElement.textContent = "Not Read"
+//     }
+// }
 
 
 //Creating a delete function
@@ -154,11 +177,12 @@ function deleteBook(e){
 
 addBookBtn.addEventListener('click', displayModal)
 submitBook.addEventListener('click', submitNewBook);
+readBtn.addEventListener('change', submitBook)
 cancelBtn.addEventListener('click', (e) => {
     e.preventDefault();
     modalContainer.style.display = 'none'
 });
-readBtn.addEventListener('change', readBook);
+// readBtn.addEventListener('change', readBook);
 document.getElementById('bookContent').addEventListener('click', (e) => {
     const deleteIcon = e.target.closest('.deleteBtn');
     if (deleteIcon){
