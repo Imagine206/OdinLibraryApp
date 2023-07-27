@@ -5,11 +5,11 @@ const cancelBtn = document.getElementById('cancelBtn');
 const readBtn = document.getElementById('read');
 
 // The object Constructer 
-function Book(title, author, pages, hasRead){
+function Book(title, author, pages, read){
     this.title = title
     this.author = author
     this.pages = pages
-    this.hasRead = hasRead
+    this.read = read
 }
 
 // Adding the users info from the form to the empty array
@@ -23,13 +23,13 @@ function displayModal(){
 }
 
 
-Book.prototype.readBook = function (){
-    if (this.hasRead){
-        return "Read";
-    }else {
-        return "Not Read"
-    }
-}
+// Book.prototype.readBook = function (){
+//     if (this.hasRead){
+//         return "Read";
+//     }else {
+//         return "Not Read"
+//     }
+// }
 
 
 // When User clicks submit run this Function
@@ -44,19 +44,19 @@ function submitNewBook(e){
     const title = document.getElementById('title').value;
     const author = document.getElementById('author').value;
     const pages = parseInt(document.getElementById('pages').value);
-    const hasRead = document.getElementById('read').value;
+    const read = document.getElementById('read').checked;
 
     // Check if the input value are empty and the pages input is a number
     if (title !== '' && author !== '' && !isNaN(pages) && pages > 0){
         // Create a new instance of the book
-        const newBook = new Book(title, author, pages);
-
+        const newBook = new Book(title, author, pages, read ? "Read" : "Not Read");
         
         
         // push the new book to the empty array
         bookArr.push(newBook);
-        
+        console.log(bookArr)
         // update the display to show the new book
+        
         displayBooks(bookArr);
 
         // Display the modal as none to hide
@@ -73,15 +73,7 @@ function submitNewBook(e){
     }
 
 
-    //Trying to Update the card with the read status
-//     const readStatus = document.getElementById("readeStatus")
-
-//     if(readStatus.getAttribute("type")){
-//         readStatus.innerHTML = "Read"
-//     }else {
-//         readStatus.innerHTML = "Not Read"
-//     }
-    
+    // Trying to Update the card with the read status
 }
 
 // This function displays the users book on the page
@@ -100,12 +92,6 @@ function displayBooks(arr){
         const bookDiv = document.createElement("div");
         // Adding the class book to style the card
         bookDiv.classList.add('book');
-
-
-        const readStatusElement = document.createElement('span');
-        readStatusElement.classList.add('readStatus');
-        readStatusElement.textContent = book.readBook();
-        bookDiv.appendChild(readStatusElement)
 
         // Creating a Date object
         const currentDate = new Date();
@@ -126,31 +112,22 @@ function displayBooks(arr){
                         <i class="fa-solid fa-trash trash-icon deleteBtn"></i>
                     </div>
                     <div class="readStatusWrapper">
-                        <span id="readStatus"></span>
+                        <span class="readStatus">${book.read}</span>
                     </div>
                 </div>
         `
-
+        
         // Appending teh bookDiv to booksContainer to show the div on the webpage
-        booksContainer.appendChild(bookDiv)
+        booksContainer.appendChild(bookDiv);
+
+        const readEl = document.querySelector('.readStatus');
+        if (readEl.innerHTML === "Read"){
+            readEl.style.backgroundColor = "#0ddf05"
+        }else if (readEl.innerHTML === "Not Read"){
+            readEl.style.backgroundColor = "red"
+        }
     }
 }
-
-// function readBook(e){
-//     const readCheckbox = e.target;
-//     console.log(readCheckbox);
-
-//     const cardElement = readCheckbox.closest('.card');
-
-//     const readStatusElement = cardElement.querySelector('.readStatus');
-
-//     if (readCheckbox.checked){
-//         readStatusElement.textContent = "Read";
-//     }else {
-//         readStatusElement.textContent = "Not Read"
-//     }
-// }
-
 
 //Creating a delete function
 function deleteBook(e){
@@ -168,25 +145,48 @@ function deleteBook(e){
         if (!isNaN(index) && index >= 0 && index < bookArr.length){
             //if
             bookArr.splice(index, 1);
-            displayBooks(bookArr)
+            displayBooks(bookArr);
         }
     }
     console.log("Updated bookArr", bookArr)
 }
 
+// function changeReadStatus(e){
+//     const button = e.target
+//     console.log(button)
+
+//     if (button === "Read"){
+//         button.style.backgroundColor = "red";
+//     }else {
+//         button.style.backgroundColor = "green"
+//     }
+// }
+
 
 addBookBtn.addEventListener('click', displayModal)
 submitBook.addEventListener('click', submitNewBook);
-readBtn.addEventListener('change', submitBook)
 cancelBtn.addEventListener('click', (e) => {
     e.preventDefault();
     modalContainer.style.display = 'none'
 });
-// readBtn.addEventListener('change', readBook);
 document.getElementById('bookContent').addEventListener('click', (e) => {
     const deleteIcon = e.target.closest('.deleteBtn');
     if (deleteIcon){
         deleteBook(e)
+    }
+
+    const readStatus = e.target.closest('.readStatus')
+    if(readStatus){
+        const readStatus = e.target
+
+        console.log(readStatus)
+        if(readStatus.innerHTML === "Read"){
+            readStatus.style.backgroundColor = "red";
+            readStatus.textContent = "Not Read"
+        }else if(readStatus.innerHTML === "Not Read"){
+            readStatus.style.backgroundColor = "#0ddf05";
+            readStatus.textContent = "Read"
+        }
     }
 })
 

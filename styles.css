@@ -1,6 +1,7 @@
 *{
     padding: 0;
     margin: 0;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 :root{
@@ -152,7 +153,7 @@ body{
   bottom: 0;
   height: 2px;
   width: 0;
-  background-color: lightblue;
+  background-color: rgb(44, 161, 200);
   transition: .5s ease;
 }
 
@@ -172,7 +173,7 @@ body{
   bottom: 0;
   height: 0;
   width: 100%;
-  background-color: lightblue;
+  background-color: rgb(44, 161, 200);
   transition: .4s ease;
   z-index: -1;
 }
@@ -250,7 +251,7 @@ body{
   
   .card .card__arrow {
     position: absolute;
-    background: var(--primary-color);
+    background: rgb(44, 161, 200);
     padding: 0.4rem;
     border-top-left-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
@@ -268,7 +269,7 @@ body{
   
   /* hover */
   .card:hover .card__title {
-    color: var(--primary-color);
+    color: rgb(44, 161, 200);
     text-decoration: underline;
   }
   
@@ -308,7 +309,7 @@ body{
 .form-control input:focus,
 .form-control input:valid {
   outline: 0;
-  border-bottom-color: lightblue;
+  border-bottom-color: rgb(44, 161, 200);
 }
 
 .form-control label {
@@ -328,7 +329,7 @@ body{
 
 .form-control input:focus+label span,
 .form-control input:valid+label span {
-  color: lightblue;
+  color: rgb(44, 161, 200);
   transform: translateY(-30px);
 }
 
@@ -348,7 +349,7 @@ body{
   border: 1px solid white;
   width: var(--plus_sideLength);
   height: var(--plus_sideLength);
-  background-color: #000000;
+  background-color: rgb(44, 161, 200);
   overflow: hidden;
 }
 
@@ -395,4 +396,10 @@ body{
 .plusButton:focus-visible>.plusIcon {
   fill: black;
   transform: rotate(180deg);
+}
+
+.readStatus{
+    padding: 10px 20px;
+    width: fit-content;
+    border-radius: 10px;
 }
